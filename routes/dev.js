@@ -24,7 +24,7 @@ let selectedStop = function(stop_id){
             location_type : 1,
             parent_station : 1
         })
-        .then(stops=>resolve(stops))
+        .then(stop=>resolve(stop))
     });
     return p;
 }
@@ -60,7 +60,7 @@ let getEachStops = function(reqRoute) {
             location_type : 1,
             parent_station : 1
         })
-        .then(stops=>resolve(stops))
+        .then(stops => resolve(stops))
     });
     return p;
 }
@@ -68,9 +68,7 @@ let getEachFareRules = function(reqRoute){
     const p = new Promise((resolve, reject) => {
         gtfs.getFareRules({
             route_id : reqRoute.route_id,
-            // reqStopをどう受け取る！？
-            orizin_id : reqStop.stop_id,
-
+            // 本当はorigin_idを指定して絞り込めるが……
         },{
             stop_id : 1,
             stop_code : 1,
@@ -79,22 +77,20 @@ let getEachFareRules = function(reqRoute){
             location_type : 1,
             parent_station : 1
         })
-        .then(stops=>resolve(stops))
+        .then(rules => resolve(rules))
     });
     return p;
 }
-
 selectedStop(stop_id)
     .then(stop => {
         getRoutes(stop)
     })
     .then(routes => {
         routes.forEach(element => getEachStops(element));
-        routes.forEach(element => get)
+        routes.forEach(element => getEachFareRules(element));
     })
     .then(stops => console.log(stops))
-    // .then((xhr) => openFile('baz.txt'))
-    // .then((xhr) => console.log('done!'));
+
 
 
 //---------------------------------------------
