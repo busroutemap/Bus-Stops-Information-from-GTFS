@@ -10,25 +10,131 @@ const config = {
 };
 // 入力に応じて処理を分ける
 // user、app、gtfs
+
+let selectedStop = function(stop_id){
+    const p = new Promise((resolve, reject) => {
+        gtfs.getStops({
+            stop_id : stop_id
+        },{
+            stop_id : 1,
+            stop_code : 1,
+            stop_name : 1,
+            stop_desc : 1,
+            zone_id : 1,
+            location_type : 1,
+            parent_station : 1
+        })
+        .then(stops=>resolve(stops))
+    });
+    return p;
+}
+
+
+let getRoutes = function(reqStop) {
+    const p = new Promise((resolve, reject) => {
+        gtfs.getRoutes({
+            stop_id : reqStop.stop_id
+        },{
+            route_id : 1,
+            agency_id : 1,
+            route_short_name : 1,
+            route_long_name: 1,
+            jp_parent_route_id: 1,
+            agency_key: 1
+        })
+        .then(routes=>resolve(routes))
+    });
+    return p;
+}
+
+let getEachStops = function(reqRoute) {
+    const p = new Promise((resolve, reject) => {
+        gtfs.getStops({
+            route_id : reqRoute.route_id
+        },{
+            stop_id : 1,
+            stop_code : 1,
+            stop_name : 1,
+            stop_desc : 1,
+            zone_id : 1,
+            location_type : 1,
+            parent_station : 1
+        })
+        .then(stops=>resolve(stops))
+    });
+    return p;
+}
+let getEachFareRules = function(reqRoute){
+    const p = new Promise((resolve, reject) => {
+        gtfs.getFareRules({
+            route_id : reqRoute.route_id,
+            // reqStopをどう受け取る！？
+            orizin_id : reqStop.stop_id,
+
+        },{
+            stop_id : 1,
+            stop_code : 1,
+            stop_name : 1,
+            stop_desc : 1,
+            location_type : 1,
+            parent_station : 1
+        })
+        .then(stops=>resolve(stops))
+    });
+    return p;
+}
+
+selectedStop(stop_id)
+    .then(stop => {
+        getRoutes(stop)
+    })
+    .then(routes => {
+        routes.forEach(element => getEachStops(element));
+        routes.forEach(element => get)
+    })
+    .then(stops => console.log(stops))
+    // .then((xhr) => openFile('baz.txt'))
+    // .then((xhr) => console.log('done!'));
+
+
 //---------------------------------------------
 let api_user = function(req, res, next){
     mongoose.connect(config.mongoUrl, {useNewUrlParser: true});
     // http://localhost:3000/dev/?stop_id="id指定"
+    // http://localhost:3000/dev/?stop_id=S00525AGC9070001018357H001
+    // 敷島公園北
+
+
+    
     const reqStop = req.query.stop_id;
     let resRoutes = [];
-    gtfs.getRoutes({
-        stop_id : reqStop
-    })
-    .then(routes=>{
-        routes.forEach(element => {
-            resRoutes.push(element);
-        });
-    })
+    // gtfs.getRoutes({
+    //     stop_id : reqStop
+    // },{
+    //     route_id : 1,
+    //     agency_id : 1,
+    //     route_short_name : 1,
+    //     route_long_name: 1,
+    //     jp_parent_route_id: 1,
+    //     agency_key: 1
+    // })
+    // .then(routes=>{
+    //     // res.header('Content-Type', 'application/json; charset=utf-8')
+    //     // res.send(routes);
+    //     // routes.forEach(element => {
+    //         console.log(resRoutes);
+    //         console.log(routes);
+    //         resRoutes.push(routes);
+
+    //         // });
+    // })
+    console.log(resRoutes);
     // next()
     // TODO : ここでの値を確認する
     // -> 特に、各routeデータに含まれる値は？
     res.header('Content-Type', 'application/json; charset=utf-8')
-    return res.send(resRoutes);
+    res.send(resRoutes);
+    return
 }
 //---------------------------------------------
 let api_gtfs = function(req, res, next){
@@ -96,7 +202,7 @@ let api_page = function(req, res, next){
 
 //---------------------------------------------
 // NOTE : APIに書くことではないかも？
-let conVue = new Vue({
+/* let conVue = new Vue({
     data(){
         return{
             stop_id : ''
@@ -145,7 +251,7 @@ let conVue = new Vue({
         // },
     }
 })
-// .$mount('#listview')
+// .$mount('#listview') */
 
 //---------------------------------------------
 // apis配列に記述していく順に各ミドルウェアが実行
