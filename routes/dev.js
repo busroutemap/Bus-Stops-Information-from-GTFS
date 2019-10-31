@@ -12,6 +12,7 @@ const config = {
 // user、app、gtfs
 //---------------------------------------------
 let api_user = function(req, res, next){
+    mongoose.connect(config.mongoUrl, {useNewUrlParser: true});
     // http://localhost:3000/dev/?stop_id="id指定"
     const reqStop = req.query.stop_id;
     let resRoutes = [];
@@ -26,7 +27,8 @@ let api_user = function(req, res, next){
     // next()
     // TODO : ここでの値を確認する
     // -> 特に、各routeデータに含まれる値は？
-    return res.send();
+    res.header('Content-Type', 'application/json; charset=utf-8')
+    return res.send(resRoutes);
 }
 //---------------------------------------------
 let api_gtfs = function(req, res, next){
