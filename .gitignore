@@ -2,3 +2,4 @@
 *.BridgeSort
 .vscode/
 private/
+node_modules/
