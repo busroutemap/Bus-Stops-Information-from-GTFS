@@ -140,13 +140,15 @@ let api_user = function(req, res, next){
         return pages
         // return stop, routes, stops, fareRules, stopTimes;
     })
+    .then(pages => {
+        res.header('Content-Type', 'application/json; charset=utf-8')
+        res.send(pages);
+    })
 
     // console.log(pages);
     // next()
     // TODO : ここでの値を確認する
     // -> 特に、各routeデータに含まれる値は？
-    res.header('Content-Type', 'application/json; charset=utf-8')
-    res.send(pages);
     return
 }
 //---------------------------------------------
