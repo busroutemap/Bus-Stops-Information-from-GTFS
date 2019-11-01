@@ -64,33 +64,45 @@ let getEachStops = function(reqRoute) {
     });
     return p;
 }
-let getEachFareRules = function(reqRoute){
+let getEachFareRules = function(reqRoute, reqStop){
     const p = new Promise((resolve, reject) => {
         gtfs.getFareRules({
             route_id : reqRoute.route_id,
-            // 本当はorigin_idを指定して絞り込めるが……
+            origin_id : stop.zone_id
         },{
-            stop_id : 1,
-            stop_code : 1,
-            stop_name : 1,
-            stop_desc : 1,
-            location_type : 1,
-            parent_station : 1
+            // fareRulesの配列が何かにもよる
+            // fareattributionsが含まれてい無いと思うけど、
+            // そうなれば、mongooseからfare_idを問い合わせる必要がある
         })
         .then(rules => resolve(rules))
     });
     return p;
 }
-selectedStop(stop_id)
-    .then(stop => {
-        getRoutes(stop)
-    })
-    .then(routes => {
-        routes.forEach(element => getEachStops(element));
-        routes.forEach(element => getEachFareRules(element));
-    })
-    .then(stops => console.log(stops))
 
+let getEach1stTrip = function(reqRoute){
+    const p = new Promise((resolve, reject) => {
+        gtfs.getTrips({
+            route_id : reqRoute.route_id,
+        },{
+            trip_id : 1,
+            service_id : 1
+        })
+        .then(trips => {
+            gtfs.getStoptimes({
+                trip_id : trips[0],
+                route_id : reqRoute.route_id
+            },{
+                arrival_time : 1,
+                departure_time : 1,
+                stop_id : 1,
+                stop_sequence : 1,
+                stop_headsign : 1
+            })
+        })
+        .then(stop_times => resolve(stop_times))
+    })
+    return p
+}
 
 
 //---------------------------------------------
@@ -99,37 +111,42 @@ let api_user = function(req, res, next){
     // http://localhost:3000/dev/?stop_id="id指定"
     // http://localhost:3000/dev/?stop_id=S00525AGC9070001018357H001
     // 敷島公園北
+    const stop_id = req.query.stop_id;
+    let pages = {};
+    //---------------------------------------------
+    selectedStop(stop_id)
+    .then(stop => {
+        let routes = {}
+        routes = getRoutes(stop);
+        return stop, routes
+    })
+    .then((stop, routes) => {
+        let stops = {};
+        routes.forEach(element => {
+            stops[element.route_id] = getEachStops(element);
+        });
+        let fareRules = {};
+        routes.forEach(element => {
+            fareRules[element.route_id] = getEachFareRules(element, stop);
+        });
+        let stopTimes = {}
+        routes.forEach(element => {
+            stopTimes[element.route_id] = getEach1stTrip(element);
+        })
+        return stop, routes, stops, fareRules, stopTimes;
+    })
+    .then((stop, routes, stops, fareRules, stopTimes) => {
+        pages = {stop, routes, stops, fareRules, stopTimes};
+        return pages
+        // return stop, routes, stops, fareRules, stopTimes;
+    })
 
-
-    
-    const reqStop = req.query.stop_id;
-    let resRoutes = [];
-    // gtfs.getRoutes({
-    //     stop_id : reqStop
-    // },{
-    //     route_id : 1,
-    //     agency_id : 1,
-    //     route_short_name : 1,
-    //     route_long_name: 1,
-    //     jp_parent_route_id: 1,
-    //     agency_key: 1
-    // })
-    // .then(routes=>{
-    //     // res.header('Content-Type', 'application/json; charset=utf-8')
-    //     // res.send(routes);
-    //     // routes.forEach(element => {
-    //         console.log(resRoutes);
-    //         console.log(routes);
-    //         resRoutes.push(routes);
-
-    //         // });
-    // })
-    console.log(resRoutes);
+    // console.log(pages);
     // next()
     // TODO : ここでの値を確認する
     // -> 特に、各routeデータに含まれる値は？
     res.header('Content-Type', 'application/json; charset=utf-8')
-    res.send(resRoutes);
+    res.send(pages);
     return
 }
 //---------------------------------------------
