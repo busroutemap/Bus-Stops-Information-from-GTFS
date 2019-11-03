@@ -3,7 +3,7 @@ const gtfs = require('gtfs');
 
 let getData = async (stop_id) => {
     //---------------------------------------------
-    let p1 = (stop_id) => {
+    let p1getRoutes = (stop_id) => {
         const p = new Promise((resolve, reject) => {
             gtfs.getRoutes({
                 stop_id : stop_id
@@ -19,7 +19,7 @@ let getData = async (stop_id) => {
         });
         return p
     }
-    let routes = await p1(stop_id);
+    let routes = await p1getRoutes(stop_id);
     //---------------------------------------------
     let p2getEachStops = (routes) => {
         const p = new Promise((resolve, reject) => {
