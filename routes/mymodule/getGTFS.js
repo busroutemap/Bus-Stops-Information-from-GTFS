@@ -73,7 +73,7 @@ let getData = async (stop_id) => {
             .then(trips => {
                 gtfs.getStoptimes({
                     trip_id : trips[0],
-                    route_id : reqRoute.route_id
+                    route_id : routes.route_id
                 },{
                     arrival_time : 1,
                     departure_time : 1,
