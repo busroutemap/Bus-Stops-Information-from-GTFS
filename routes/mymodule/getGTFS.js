@@ -50,7 +50,7 @@ let getData = async (stop_id) => {
         const p = new Promise((resolve, reject) => {
             gtfs.getFareRules({
                 route_id : routes.route_id,
-                origin_id : origin_id
+                origin_id : origin_id.zone_id
             },{
                 // fareRulesの配列が何かにもよる
                 // fareattributionsが含まれてい無いと思うけど、
