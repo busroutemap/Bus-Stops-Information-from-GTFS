@@ -43,7 +43,7 @@ let getData = async (stop_id) => {
     }
     let eachStops = p2getEachStops(routes)
     //---------------------------------------------
-    let p2getEachFareRules = (routes, stop_id) => {
+    let p2getEachFareRules = async (routes, stop_id) => {
         let origin_id = await gtfs.getStops({
             route_id : routes.route_id,
             stop_id : stop_id
