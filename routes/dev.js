@@ -10,14 +10,15 @@ const config = {
 };
 //---------------------------------------------
 let api = async function(req, res, next){
+    mongoose.set('useCreateIndex', true);
     mongoose.connect(config.mongoUrl, {useNewUrlParser: true});
     // http://localhost:3000/dev/?stop_id="id指定"
     // http://localhost:3000/dev/?stop_id=S00525AGC9070001018357H001
     // 敷島公園北
     const stop_id = req.query.stop_id;
-    res.header('Content-Type', 'application/json; charset=utf-8');
     let data = await getGTFS(stop_id);
     // let data = await getGTFS.getData(stop_id);
+    res.header('Content-Type', 'application/json; charset=utf-8');
     res.send(data);
 }
 //---------------------------------------------
