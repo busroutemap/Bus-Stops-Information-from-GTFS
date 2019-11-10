@@ -50,7 +50,6 @@ let getData = async (stop_id) => {
                     parent_station : 1
                 })
                 .then(stops => {
-                    console.log(stops);
                     resolve(stops);
                 })
             });
