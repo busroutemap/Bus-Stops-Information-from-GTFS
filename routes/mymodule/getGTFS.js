@@ -107,30 +107,40 @@ let getData = async (stop_id) => {
     }
     let ruleLists = await p2getEachFareRules(routes, stop_id);
     //---------------------------------------------
-    let p2getEach1stTrip = async (routes) => {
-        let f = (route) => {
+    /**
+     * 各系統の平均的な所要時間を求める
+     * 
+     * 各系統の便数を数え上げ、その中央値(恐らく昼)の便を使用し、ユーザー指定停留所から他バス停までの所要時間を算出する
+     * @param routes stop_idを通る系統ごとの、系統の配列
+     * @return periods
+     */
+    let p2getEachMiddleTrip = async (routes) => {
+        let f = async (route) => {
+            let mTrip = await new Promise((resolve,reject) => {
+                gtfs.getTrips({
+                    route_id : route.route_id
+                },{
+                    _id : 0,
+                    trip_id : 1
+                })
+                .then(trips => {
+                    let middleLength = Math.ceil(trips.length / 2);
+                    resolve(trips[middleLength]);
+                })
+            });
             let p = new Promise((resolve, reject) => {
-                // gtfs.getTrips({
-                //     route_id : route.route_id,
-                // },{
-                //     trip_id : 1,
-                //     service_id : 1
-                // })
-                // .then(trips => {
-                    gtfs.getStoptimes({
-                        // trip_id : trips[0].trip_id,
-                        // 上はどうも不具合の原因
-                        route_id : route.route_id,
-                        agency_key : route.agency_key
-                    },{
-                        _id : 0,
-                        arrival_time : 1,
-                        departure_time : 1,
-                        stop_id : 1,
-                        stop_sequence : 1,
-                        stop_headsign : 1
-                    })
-                // })
+                gtfs.getStoptimes({
+                    trip_id : mTrip.trip_id,
+                    route_id : route.route_id,
+                    agency_key : route.agency_key
+                },{
+                    _id : 0,
+                    arrival_time : 1,
+                    departure_time : 1,
+                    stop_id : 1,
+                    stop_sequence : 1,
+                    stop_headsign : 1
+                })
                 .then(stop_times => {
                     resolve(stop_times);
                 })
@@ -141,10 +151,9 @@ let getData = async (stop_id) => {
             return f(route);
         });
         let results = await Promise.all(plist);
-        console.log(results);
         return results;
     }
-    let periodLists = await p2getEach1stTrip(routes);
+    let periodLists = await p2getEachMiddleTrip(routes);
     //---------------------------------------------
     return periodLists;
     // return routes,eachStops,ruleLists,periodLists
