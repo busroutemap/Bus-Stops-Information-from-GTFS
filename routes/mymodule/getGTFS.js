@@ -12,8 +12,8 @@ const gtfs = require('gtfs');
  */
 let getData = async (stop_id) => {
     //---------------------------------------------
-    let p1getRoutes = (stop_id) => {
-        const p = new Promise((resolve, reject) => {
+    let p1getRoutes = async (stop_id) => {
+        let p = await new Promise((resolve, reject) => {
             gtfs.getRoutes({
                 stop_id : stop_id
             }, {
@@ -23,9 +23,11 @@ let getData = async (stop_id) => {
                 route_short_name : 1,
                 route_long_name: 1,
                 jp_parent_route_id: 1,
-                // agency_key: 1
+                agency_key: 1
             })
-            .then(routes => resolve(routes))
+            .then(routes => {
+                resolve(routes);
+            })
         });
         return p
     }
@@ -59,7 +61,7 @@ let getData = async (stop_id) => {
             (route) => {return f(route)})
         let s = await Promise.all(plist)
         .then((results) => {
-            console.log(results);
+            // console.log(results);
         });
         return s;
     }
@@ -98,7 +100,7 @@ let getData = async (stop_id) => {
             return p;
         }
         let plist = routes.map((route) => {
-            return f(route)
+            return f(route);
         })
         let results = await Promise.all(plist);
         return results;
@@ -116,10 +118,12 @@ let getData = async (stop_id) => {
                 // })
                 // .then(trips => {
                     gtfs.getStoptimes({
-                        // trip_id : trips[0],
+                        // trip_id : trips[0].trip_id,
                         // 上はどうも不具合の原因
-                        route_id : route.route_id
+                        route_id : route.route_id,
+                        agency_key : route.agency_key
                     },{
+                        _id : 0,
                         arrival_time : 1,
                         departure_time : 1,
                         stop_id : 1,
@@ -135,13 +139,14 @@ let getData = async (stop_id) => {
         }
         let plist = routes.map((route) => {
             return f(route);
-        })
-        let s = await Promise.all(plist)
-        return s;
+        });
+        let results = await Promise.all(plist);
+        console.log(results);
+        return results;
     }
-    let periodLists = p2getEach1stTrip(routes);
+    let periodLists = await p2getEach1stTrip(routes);
     //---------------------------------------------
-    return ruleLists;
+    return periodLists;
     // return routes,eachStops,ruleLists,periodLists
 }
 
