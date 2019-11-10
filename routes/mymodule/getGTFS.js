@@ -67,8 +67,6 @@ let getData = async (stop_id) => {
     //---------------------------------------------
     let p2getEachFareRules = async(routes, stop_id) => {
         // 後でfare_idに対応する運賃を問い合わせる必要あり
-        console.log(routes);
-        console.log(stop_id);
         let originStop = await new Promise((resolve,reject) => {
             gtfs.getStops({
                 route_id : routes.route_id,
@@ -77,16 +75,16 @@ let getData = async (stop_id) => {
                 _id : 0,
                 zone_id : 1
             })
-            .then(stop => {
-                resolve(stop);
+            .then(stops => {
+                // たとえ1バス停だけの情報でも、stopsは配列で返される点に留意
+                resolve(stops[0]);
             });
         });
-        console.log(originStop.zone_id);
-        let f = (route,origin) => {
+        let f = (route) => {
             let p = new Promise((resolve, reject) => {
                 gtfs.getFareRules({
                     route_id : route.route_id,
-                    // origin_id : origin.zone_id
+                    origin_id : originStop.zone_id
                 },{
                     _id : 0,
                     fare_id : 1,
@@ -100,7 +98,7 @@ let getData = async (stop_id) => {
             return p;
         }
         let plist = routes.map((route) => {
-            return f(route,originStop)
+            return f(route)
         })
         let results = await Promise.all(plist);
         return results;
@@ -143,7 +141,7 @@ let getData = async (stop_id) => {
     }
     let periodLists = p2getEach1stTrip(routes);
     //---------------------------------------------
-    return ruleLists, periodLists;
+    return ruleLists;
     // return routes,eachStops,ruleLists,periodLists
 }
 
