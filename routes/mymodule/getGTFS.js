@@ -37,8 +37,10 @@ let getData = async (stop_id) => {
         let f = (route) => {
             let p = new Promise((resolve, reject) => {
                 gtfs.getStops({
-                    route_id : route.route_id
+                    route_id : route.route_id,
+                    agency_key : route.agency_key
                 },{
+                    _id : 0,
                     stop_id : 1,
                     stop_code : 1,
                     stop_name : 1,
@@ -46,9 +48,6 @@ let getData = async (stop_id) => {
                     zone_id : 1,
                     location_type : 1,
                     parent_station : 1
-                })
-                .catch((e) => {
-                    console.log(e.message);
                 })
                 .then(stops => {
                     console.log(stops);
@@ -59,14 +58,19 @@ let getData = async (stop_id) => {
         }
         let plist = routes.map(
             (route) => {return f(route)})
-        let s = await Promise.all(plist)
-        .then((results) => {
-            // console.log(results);
-        });
-        return s;
+        let results = await Promise.all(plist);
+        return results;
     }
-    // let eachStops = await p2getEachStops(routes);
+    let eachStops = await p2getEachStops(routes);
     //---------------------------------------------
+    /**
+     * 停留所間の運賃ルールを問い合わせる
+     * 
+     * 系統ごとに、ユーザー指定停留所からの運賃をデータベースへアクセスし算出する
+     * @param routes ユーザー指定停留所が通る系統群
+     * @param stop_id ユーザー指定停留所
+     * @returns ruleLists 系統ごとの運賃ルール配列
+     */
     let p2getEachFareRules = async(routes, stop_id) => {
         // 後でfare_idに対応する運賃を問い合わせる必要あり
         let originStop = await new Promise((resolve,reject) => {
@@ -155,7 +159,7 @@ let getData = async (stop_id) => {
     }
     let periodLists = await p2getEachMiddleTrip(routes);
     //---------------------------------------------
-    return periodLists;
+    return eachStops;
     // return routes,eachStops,ruleLists,periodLists
 }
 
