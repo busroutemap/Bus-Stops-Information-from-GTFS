@@ -117,7 +117,7 @@ let getData = async (stop_id) => {
      * @param routes stop_idを通る系統ごとの、系統の配列
      * @return periods
      */
-    let p2getEachMiddleTrip = async (routes) => {
+    let p2getEachMiddleTrip = async (routes,stop_id) => {
         let f = async (route) => {
             let mTrip = await new Promise((resolve,reject) => {
                 gtfs.getTrips({
@@ -154,12 +154,38 @@ let getData = async (stop_id) => {
             return f(route);
         });
         let results = await Promise.all(plist);
+        //---------------------------------------------
+        // ユーザー指定停留所の時刻を調べておく
         return results;
     }
+    // let timelists = await p2getEachMiddleTrip(routes,stop_id);
+    const yy = 2016;
+    const mm = 4;
+    const dd = 4;
+    // 1. まずはユーザー指定停留所の時刻を配列から探す(頭悪い？)
+    // 2. 比較して所要時間の差を返す
+    let hereStopTime = new Date(yy,mm,dd)
+    timielist.forEach(eachStopTimes => {
+        eachStopTimes.map((stopTimes) => {
+            // 時刻を分割
+            let stopTime = stopTimes.arrival_time.split("-");
+            let aimStopTime = new Date(2016,4,4,stopTime[0],stopTime[1],stopTime[2]);
+        })
+        return eachRoute.map((times) => {
+            let diff = dst.getTime() - times.getTime();
+        })
+    });
+    let minute = diff/1000*60;
+
     let periodLists = await p2getEachMiddleTrip(routes);
     //---------------------------------------------
-    return eachStops;
-    // return routes,eachStops,ruleLists,periodLists
+    let all = {
+        routes:routes,
+        eachStops:eachStops,
+        ruleLists:ruleLists,
+        periodLists:periodLists
+    }
+    return all
 }
 
 module.exports = getData;
