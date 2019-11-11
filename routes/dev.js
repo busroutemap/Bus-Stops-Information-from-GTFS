@@ -15,6 +15,7 @@ let api = async function(req, res, next){
     // http://localhost:3000/dev/?stop_id="id指定"
     // http://localhost:3000/dev/?stop_id=S00525AGC9070001018357H001
     // 敷島公園北
+    // http://localhost:3000/dev/?stop_id=S00378AGC9070001018357T000
     const stop_id = req.query.stop_id;
     let data = await getGTFS(stop_id);
     // let data = await getGTFS.getData(stop_id);

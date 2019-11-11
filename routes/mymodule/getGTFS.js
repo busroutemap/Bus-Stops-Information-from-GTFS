@@ -1,4 +1,5 @@
 const gtfs = require('gtfs');
+var getPeriods = require('./getPeriods');
 
 /**
  * データベースへGTFSを探す関数
@@ -158,25 +159,6 @@ let getData = async (stop_id) => {
         // ユーザー指定停留所の時刻を調べておく
         return results;
     }
-    // let timelists = await p2getEachMiddleTrip(routes,stop_id);
-    const yy = 2016;
-    const mm = 4;
-    const dd = 4;
-    // 1. まずはユーザー指定停留所の時刻を配列から探す(頭悪い？)
-    // 2. 比較して所要時間の差を返す
-    let hereStopTime = new Date(yy,mm,dd)
-    timielist.forEach(eachStopTimes => {
-        eachStopTimes.map((stopTimes) => {
-            // 時刻を分割
-            let stopTime = stopTimes.arrival_time.split("-");
-            let aimStopTime = new Date(2016,4,4,stopTime[0],stopTime[1],stopTime[2]);
-        })
-        return eachRoute.map((times) => {
-            let diff = dst.getTime() - times.getTime();
-        })
-    });
-    let minute = diff/1000*60;
-
     let periodLists = await p2getEachMiddleTrip(routes);
     //---------------------------------------------
     let all = {
