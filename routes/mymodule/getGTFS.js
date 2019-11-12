@@ -160,12 +160,14 @@ let getData = async (stop_id) => {
         return results;
     }
     let periodLists = await p2getEachMiddleTrip(routes);
+    let periods = await getPeriods(periodLists,stop_id);
     //---------------------------------------------
     let all = {
         routes:routes,
         eachStops:eachStops,
         ruleLists:ruleLists,
-        periodLists:periodLists
+        periodLists:periodLists,
+        periods:periods
     }
     return all
 }
