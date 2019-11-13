@@ -1,6 +1,6 @@
 const gtfs = require('gtfs');
-var getPeriods = require('./getPeriods');
-
+const getPeriods = require('./getPeriods');
+const getFares = require('./getFares');
 /**
  * データベースへGTFSを探す関数
  * 
@@ -110,6 +110,7 @@ let getData = async (stop_id) => {
         return results;
     }
     let ruleLists = await p2getEachFareRules(routes, stop_id);
+    const fareLists = await getFares(ruleLists);
     //---------------------------------------------
     /**
      * 各系統の平均的な所要時間を求める
@@ -166,6 +167,7 @@ let getData = async (stop_id) => {
         routes:routes,
         eachStops:eachStops,
         ruleLists:ruleLists,
+        fares:fareLists,
         periodLists:periodLists,
         periods:periods
     }

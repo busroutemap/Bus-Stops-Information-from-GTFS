@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var getGTFS = require('./mymodule/getGTFS');
-// var periods = require('./mymodule/makePeriodList');
-// var fareLists = require('./mymodule/makeFareList');
-// var appSettings = require('./mymodule/appSettings');
 const mongoose = require('mongoose');
 const config = {
     mongoUrl: 'mongodb://localhost:27017/gtfs',
