@@ -10,7 +10,7 @@ const gtfs = require('gtfs');
  */
 let getPeriods = (timeLists,stop_id) => {
     let periods = timeLists.map((timesEachRoute) => {
-        console.log(timesEachRoute);
+        // console.log(timesEachRoute);
         const yy = 2016;
         const mm = 4;
         const dd = 4;
