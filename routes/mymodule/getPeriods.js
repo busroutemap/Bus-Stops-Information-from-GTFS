@@ -25,7 +25,6 @@ let getPeriods = (timeLists,stop_id) => {
         }
         let periodsEachRoutes = [];
         for (let i = 0; i < timesEachRoute.length; i++){
-            // timesEachRoute
             let stopTime = timesEachRoute[i].arrival_time.split(":");
             let aimStopTime = new Date(yy,mm,dd,stopTime[0],stopTime[1],stopTime[2]);
             let diff = aimStopTime.getTime() - hereStopTime.getTime();
@@ -33,7 +32,6 @@ let getPeriods = (timeLists,stop_id) => {
             // マイナスになることもありうるのでmで絶対値化
             periodsEachRoutes.push(Math.abs(m));
         }
-        // console.log(periodsEachRoutes);
         return periodsEachRoutes;
     })
     return periods;
