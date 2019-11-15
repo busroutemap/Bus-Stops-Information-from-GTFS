@@ -179,8 +179,7 @@ const getData = async (stop_id) => {
         routes:routes,
         eachStops:eachStops,
         ruleLists:ruleLists,
-        // fares:fareLists,
-        periodLists:periodLists,
+        // periodLists:periodLists,
         periods:periods
     }
     console.timeEnd('getData');
