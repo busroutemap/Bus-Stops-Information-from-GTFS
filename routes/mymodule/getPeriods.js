@@ -8,8 +8,8 @@ const gtfs = require('gtfs');
  * @param timeLists [route1のある1便のStopTimesのArray,route2のある1便のStopTimesのArray...]
  * @returns periods [route1の所要時間Array,route2の所要時間Array...]
  */
-let getPeriods = (timeLists,stop_id) => {
-    let periods = timeLists.map((timesEachRoute) => {
+let getPeriods = async(timeLists,stop_id) => {
+    let periods = await timeLists.map((timesEachRoute) => {
         const yy = 2016;
         const mm = 4;
         const dd = 4;
@@ -23,6 +23,7 @@ let getPeriods = (timeLists,stop_id) => {
             }
         }
         let periodsEachRoutes = [];
+        // console.log(timesEachRoute.length);
         for (let i = 0; i < timesEachRoute.length; i++){
             let stopTime = timesEachRoute[i].arrival_time.split(":");
             let aimStopTime = new Date(yy,mm,dd,stopTime[0],stopTime[1],stopTime[2]);

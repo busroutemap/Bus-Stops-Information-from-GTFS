@@ -14,6 +14,7 @@ const mongoose = require('mongoose');
  * @return periodLists stop_idを通る系統ごとの、各バス停までの所要時間の配列
  */
 const getData = async (stop_id) => {
+    console.time('getData');
     //---------------------------------------------
     const p1getRoutes = (stop_id) => {
         const p = gtfs.getRoutes({
@@ -35,7 +36,9 @@ const getData = async (stop_id) => {
             })
         return p
     }
+    console.timeLog('getData');
     const routes = await p1getRoutes(stop_id);
+    console.timeLog('getData');
     //---------------------------------------------
     const p2getEachStops = async (routes) => {
         const f = (route) => {
@@ -65,6 +68,7 @@ const getData = async (stop_id) => {
         return results;
     }
     const eachStops = await p2getEachStops(routes);
+    console.timeLog('getData');
     //---------------------------------------------
     /**
      * 停留所間の運賃ルールを問い合わせる
@@ -113,6 +117,7 @@ const getData = async (stop_id) => {
             ruleLists[i][j].price = fareLists[i][j].price
         }
     }
+    console.timeLog('getData');
     //---------------------------------------------
     /**
      * 各系統の平均的な所要時間を求める
@@ -131,13 +136,15 @@ const getData = async (stop_id) => {
             })
             .catch(e=>{
                 console.log(e);
+                return(null);
             })
             .then(trips => {
-                const middleLength = Math.ceil(trips.length / 2);
+                // ゼロベースなんだよね、trips
+                const middleLength = Math.ceil(trips.length / 2) - 1;
                 return(trips[middleLength]);
             })
-            if(mTrip){
-                const p = gtfs.getStoptimes({
+            if(mTrip!=null){
+                const p = await gtfs.getStoptimes({
                     trip_id : mTrip.trip_id,
                     route_id : route.route_id,
                     agency_key : route.agency_key
@@ -158,9 +165,7 @@ const getData = async (stop_id) => {
                 return p;
             }
         }
-        const plist = routes.map((route) => {
-            return f(route);
-        });
+        const plist = routes.map(route => f(route));
         const results = await Promise.all(plist);
         //---------------------------------------------
         // ユーザー指定停留所の時刻を調べておく
@@ -168,6 +173,7 @@ const getData = async (stop_id) => {
     }
     const periodLists = await p2getEachMiddleTrip(routes);
     const periods = await getPeriods(periodLists,stop_id);
+    console.timeLog('getData');
     //---------------------------------------------
     const all = {
         routes:routes,
@@ -177,6 +183,7 @@ const getData = async (stop_id) => {
         periodLists:periodLists,
         periods:periods
     }
+    console.timeEnd('getData');
     return all
 }
 
