@@ -14,7 +14,7 @@ let api = async function(req, res, next){
     // http://localhost:3000/dev/?stop_id="id指定"
     // http://localhost:3000/dev/?stop_id=S00525AGC9070001018357H001
     // 敷島公園北
-    // たしか、広瀬橋 S00517AGC9070001018357H001
+    // 三中前 S00517AGC9070001018357H001
     // 前橋駅3番乗り場
     // 本町 S00436AGC9070001018357H001
     // 下は駄目なパターン
