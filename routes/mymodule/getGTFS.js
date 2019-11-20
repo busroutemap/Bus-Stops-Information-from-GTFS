@@ -175,12 +175,21 @@ const getData = async (stop_id) => {
     const periods = await getPeriods(periodLists,stop_id);
     console.timeLog('getData');
     //---------------------------------------------
+    const mergeData = (routes,eachStops,ruleLists,periods)=>{
+        // 本来はmodule化し、routeごとに各moduleを実行するのが理想
+        // 一旦その場しのぎの荒業を実行？
+        const nRoutes
+
+        return nRoutes
+    }
+    const mergedData = await mergeData(routes,eachStops,ruleLists,periods);
+    //---------------------------------------------
     const all = {
-        routes:routes,
-        eachStops:eachStops,
-        ruleLists:ruleLists,
+        routes:mergedData,
+        // eachStops:eachStops,
+        // ruleLists:ruleLists,
         // periodLists:periodLists,
-        periods:periods
+        // periods:periods
     }
     console.timeEnd('getData');
     return all
