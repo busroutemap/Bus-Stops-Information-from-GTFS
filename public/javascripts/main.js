@@ -48,6 +48,9 @@ let app = new Vue({
         getGTFSapi(stop_id){
             const baseURL = 'http://localhost:3000/dev/stop_id='
             fetch(baseURL+stop_id)
+            .catch(e=>{
+                console.log(e);
+            })
             .then(response => {
                 return response.json();
             })
@@ -55,9 +58,9 @@ let app = new Vue({
                 let newData = JSON.stringify(myJson);
                 console.log(newData);
                 this.routes = newData.routes;
-                this.eachStops = newData.eachStops;
-                this.ruleLists = newData.ruleLists;
-                this.periods = newData.periods;
+                // this.eachStops = newData.eachStops;
+                // this.ruleLists = newData.ruleLists;
+                // this.periods = newData.periods;
             });
         }
     }
