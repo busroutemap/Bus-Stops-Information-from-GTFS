@@ -44,6 +44,8 @@ const rows = Vue.components('rows',{
         'stopName' : stopName,
         'stopDesc' : stopDesc
     },
+    // 面倒なので、ここまでコンポーネント化しないでも良い説
+    // {{stop.fare}}{{stop.period}}など
     template : ```
     <p>
     <fare

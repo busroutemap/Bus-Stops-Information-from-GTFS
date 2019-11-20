@@ -10,33 +10,9 @@
     <routeArea 
         v-for="route in routes"
         v-bind:key="route.route_id"
-        v-bind:route="routes"
-        v-bind:stops="route.stops"
+        v-bind:route="route"
     >
     </routeArea>
-    <!-- <div v-for="route in routes" >
-        <ol>
-            <li>{{route.route_short_name}}</li>
-            <li>{{route.route_long_name}}</li>
-            <li>{{route.jp_parent_route_id}}</li>
-            <li>{{route.agency_key}}</li>
-        </ol>
-        <div v-for="stop in stops">
-            <span>{{stop.stop_name}}</span>
-            <span>{{stop.desc}}</span>
-        </div>
-    </div> -->
-    <!-- 下は理想形 -->
-    <!-- <routeArea>
-        <routeInfo></routeInfo>
-        <rows>
-            <fare></fare>
-            <period></period>
-            <line></line>
-            <stopName></stopName>
-            <stop_desc v-if=""></stop_desc>
-        </rows>
-    </routeArea> -->
     <!-- 以下は画像化部分 -->
     <!-- <button onclick="app.saveImg()">canvasをpngにする</button>
     <ol>

@@ -5,9 +5,9 @@ let app = new Vue({
         return{
             stop_id : '',
             routes : '',
-            eachStops : '',
-            ruleLists : '',
-            periods : ''
+            // eachStops : '',
+            // ruleLists : '',
+            // periods : ''
         }
     },
     computed:{
@@ -19,8 +19,8 @@ let app = new Vue({
     mounted(){
         // 仮に「本町」を指定
         this.stop_id = 'S00436AGC9070001018357H001'
-        this.canvas = this.$refs.canvas;
-        this.context = this.canvas.getContext("2d");
+        // this.canvas = this.$refs.canvas;
+        // this.context = this.canvas.getContext("2d");
     },
     watch:{
         stop_id : function(val,oldVal) {
