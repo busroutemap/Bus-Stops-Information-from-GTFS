@@ -6,11 +6,12 @@
 </head>
 <body style="background-color:ghostwhite">
 <div id="view">
+    <input v-model="stop_id" placeholder="stop_idを入力">
     <span>選択id : {{ stop_id }}</span>
     <routeArea 
         v-for="route in routes"
         v-bind:key="route.route_id"
-        v-bind:route="route"
+        v-bind:route.sync="route"
     >
     </routeArea>
     <!-- 以下は画像化部分 -->

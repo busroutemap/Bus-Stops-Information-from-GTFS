@@ -93,7 +93,7 @@ const routeInfo = {
 };
 
 const routeArea = {
-    props: ['route', 'rows'],
+    props: ['route'],
     components: {
         routeInfo: routeInfo,
         rows: rows
@@ -105,6 +105,7 @@ const routeArea = {
     <rows
         v-for="stop in route.stops"
         v-bind:key="stop.stop_id"
+        v-bind:stop="stop"
     ></rows>
     `
 };
@@ -128,7 +129,7 @@ let app = new Vue({
     },
     mounted() {
         // 仮に「本町」を指定
-        this.stop_id = 'S00436AGC9070001018357H001';
+        // this.stop_id = 'S00436AGC9070001018357H001';
         // this.getGTFSapi(this.stop_id);
         // this.canvas = this.$refs.canvas;
         // this.context = this.canvas.getContext("2d");
@@ -137,18 +138,18 @@ let app = new Vue({
         stop_id: function (val, _oldVal) {
             this.getGTFSapi(val);
         },
-        routes: function (val, _oldVal) {
-            this.drawGTFS(val);
-        },
-        eachStops: function (val, _oldVal) {
-            this.drawGTFS(val);
-        },
-        ruleLists: function (val, _oldVal) {
-            this.drawGTFS(val);
-        },
-        periods: function (val, _oldVal) {
-            this.drawGTFS(val);
-        }
+        // routes: function (val, _oldVal) {
+        //     return this.routes
+        // },
+        // eachStops: function (val, _oldVal) {
+        //     this.drawGTFS(val);
+        // },
+        // ruleLists: function (val, _oldVal) {
+        //     this.drawGTFS(val);
+        // },
+        // periods: function (val, _oldVal) {
+        //     this.drawGTFS(val);
+        // }
     },
     methods: {
         /**
@@ -156,8 +157,8 @@ let app = new Vue({
          * @param {*} stop_id
          * @returns (watch中の各値が更新される)
          */
-        getGTFSapi(stop_id) {
-            const baseURL = 'http://localhost:3000/dev/stop_id=';
+        getGTFSapi:(stop_id)=> {
+            const baseURL = 'http://localhost:3000/dev/?stop_id=';
             fetch(baseURL + stop_id)
             .catch((e) => {
                 console.log(e);
@@ -166,9 +167,16 @@ let app = new Vue({
                 return response.json();
             })
             .then((myJson) => {
-                const newData = JSON.stringify(myJson);
-                console.log(newData);
-                this.routes = newData.routes;
+                console.log(myJson);
+                try {
+                    // const newData = JSON.parse(myJson);
+                    // console.log("成功");
+                    // app.routes = newData;
+                    app.routes = myJSON;
+                    // 失敗
+                } catch (error) {
+                    console.log("パースできませんでした");
+                }
                 // this.eachStops = newData.eachStops;
                 // this.ruleLists = newData.ruleLists;
                 // this.periods = newData.periods;
