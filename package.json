@@ -13,8 +13,14 @@
     "http-errors": "~1.6.3",
     "mongoose": "^5.7.11",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11",
+    "pug": "^2.0.4",
     "vue": "^2.6.10",
     "vue-server-renderer": "^2.6.10"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-vue": "^6.0.1"
   }
 }
