@@ -47,7 +47,8 @@ const getData = async (stop_id) => {
     //---------------------------------------------
     // getData+getStops+getFare+getPeriodルート
     const getEachRouteData = async (routes) => {
-        const rerult = await routes.map(async (route,index,routes) => {
+        for (let route of routes){
+            // mTrip調査
             const mTrip = gtfs.getTrips({
                 route_id : route.route_id
             },{
@@ -64,12 +65,11 @@ const getData = async (stop_id) => {
                 // ゼロベースなんだよね、trips
                 const middleLength = Math.ceil(trips.length / 2) - 1;
                 return(trips[middleLength]);
-            })
+            });
             //---------------------------------------------
-            routes[index].stops = await getStops(route,originStop,mTrip);
-            return routes[index];
-        })
-        return rerult
+            route.stops = await getStops(route,originStop,mTrip);
+        }
+        return routes
     }
     const routes = await getEachRouteData(reqRoutes);
     //---------------------------------------------
