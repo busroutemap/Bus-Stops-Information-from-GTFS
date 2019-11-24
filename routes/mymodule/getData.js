@@ -36,7 +36,7 @@ const getData = async (stop_id) => {
     //---------------------------------------------
     console.timeLog('getData');
     const originStop = gtfs.getStops({
-        route_id : routes.route_id,
+        route_id : reqRoutes.route_id,
         stop_id : stop_id
     },{
         _id : 0,
@@ -47,7 +47,7 @@ const getData = async (stop_id) => {
     //---------------------------------------------
     // getData+getStops+getFare+getPeriodルート
     const getEachRouteData = async (routes) => {
-        const rerult = await routes.map(route => {
+        const rerult = await routes.map(async (route,index,routes) => {
             const mTrip = gtfs.getTrips({
                 route_id : route.route_id
             },{
@@ -66,7 +66,8 @@ const getData = async (stop_id) => {
                 return(trips[middleLength]);
             })
             //---------------------------------------------
-            result.stops = await getStops(route,originStop,mTrip);
+            routes[index].stops = await getStops(route,originStop,mTrip);
+            return routes[index];
         })
         return rerult
     }

@@ -22,10 +22,10 @@ const getStops = (route,originStop,mTrip) => {
     .then(stops => {
         return(stops);
     })
-    const result = stops.map(async stop => {
-        stop.fare = await getFare(route,originStop,stop);
-        stop.period = await getPeriod(mTrip,originStop,stop);
-        return stop
+    const result = stops.map(async (stop,index,stops) => {
+        stops[index].fare = await getFare(route,originStop,stop);
+        stops[index].period = await getPeriod(mTrip,originStop,stop);
+        return stops
     })
     return result;
 }

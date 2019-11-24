@@ -46,6 +46,7 @@ const rows = Vue.components('rows',{
     },
     // 面倒なので、ここまでコンポーネント化しないでも良い説
     // {{stop.fare}}{{stop.period}}など
+    // v-showで何かstop.stop_descに値がある場合のみ表示
     template : ```
     <p>
     <fare
@@ -62,7 +63,7 @@ const rows = Vue.components('rows',{
     ></stopName>
     <stopDesc
         v-bind:stop="stop"
-        v-show="!(stop.stop_desc=='')"
+        v-show="stop.stop_desc"
     ></stop_desc>
     </p>
     <br>

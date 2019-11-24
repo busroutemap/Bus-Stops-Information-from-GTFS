@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const getGTFS = require('./mymodule/getGTFS');
+// const getGTFS = require('./mymodule/getGTFS');
 const getData = require('./mymodule/getData');
 const mongoose = require('mongoose');
 // mongooseがグローバルインストールになっている
