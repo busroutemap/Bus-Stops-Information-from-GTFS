@@ -1,9 +1,10 @@
 const gtfs = require('gtfs');
 const mongoose = require('mongoose');
-const getFare = require('./getFare')
+const getFare = require('./getFare');
+const getPeriod = require('./getPeriod');
 
-const getStops = (route,originStop,mTrip) => {
-    const stops = gtfs.getStops({
+const getStops = async (route,originStop,mTrip) => {
+    let stops = await gtfs.getStops({
         route_id : route.route_id,
         agency_key : route.agency_key
     },{
@@ -22,11 +23,10 @@ const getStops = (route,originStop,mTrip) => {
     .then(stops => {
         return(stops);
     })
-    const result = stops.map(async (stop,index,stops) => {
-        stops[index].fare = await getFare(route,originStop,stop);
-        stops[index].period = await getPeriod(mTrip,originStop,stop);
-        return stops
-    })
-    return result;
+    for (let stop of stops){
+        stop.fare = await getFare(route,originStop,stop);
+        stop.period = await getPeriod(mTrip,originStop,stop);
+    }
+    return stops;
 }
 module.exports = getStops;

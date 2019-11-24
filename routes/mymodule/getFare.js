@@ -1,8 +1,15 @@
 const gtfs = require('gtfs');
 const mongoose = require('mongoose');
 
+/**
+ * getFare DBにアクセスし、originStopとdestinationStop間の運賃をNumberで返す
+ * @param route 
+ * @param originStop 
+ * @param destinationStop 
+ * @return price 定義されていなければnullを返すことがある
+ */
 const getFare = async(route,originStop,destinationStop) => {
-    const rule = gtfs.getFareRules({
+    const rule = await gtfs.getFareRules({
         route_id : route.route_id,
         origin_id : originStop.zone_id,
         destination_id : destinationStop.zone_id
@@ -28,7 +35,7 @@ const getFare = async(route,originStop,destinationStop) => {
         }
     });
     const FareModel = mongoose.model('Fare', fareSchema,'fareattributes');
-    const find = (rule)=>{
+    const find = (rule) => {
         let fare = FareModel.findOne({
             fare_id : rule.fare_id
             },{
@@ -39,6 +46,7 @@ const getFare = async(route,originStop,destinationStop) => {
         return fare.price
     }
     const price = await find(rule);
+    mongoose.deleteModel('Fare');
     return price;
 }
 

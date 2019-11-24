@@ -1,6 +1,4 @@
 const gtfs = require('gtfs');
-const getPeriods = require('./getPeriods');
-const getFares = require('./getFares');
 const mongoose = require('mongoose');
 const getStops = require('./getStops')
 
@@ -16,7 +14,7 @@ const getStops = require('./getStops')
  */
 const getData = async (stop_id) => {
     console.time('getData');
-    const reqRoutes = gtfs.getRoutes({
+    const reqRoutes = await gtfs.getRoutes({
         stop_id : stop_id
     }, {
         _id : 0,
@@ -34,13 +32,20 @@ const getData = async (stop_id) => {
         return(routes);
     });
     //---------------------------------------------
+    // ここまで5秒(2019/11/24)
     console.timeLog('getData');
-    const originStop = gtfs.getStops({
+    const originStop = await gtfs.getStops({
         route_id : reqRoutes.route_id,
         stop_id : stop_id
     },{
         _id : 0,
-        zone_id : 1
+        stop_id : 1,
+        stop_code : 1,
+        stop_name : 1,
+        stop_desc : 1,
+        zone_id : 1,
+        location_type : 1,
+        parent_station : 1
     }).then(stops=>{
         return stops[0]
     });
@@ -49,7 +54,7 @@ const getData = async (stop_id) => {
     const getEachRouteData = async (routes) => {
         for (let route of routes){
             // mTrip調査
-            const mTrip = gtfs.getTrips({
+            const mTrip = await gtfs.getTrips({
                 route_id : route.route_id
             },{
                 _id : 0,
@@ -73,6 +78,7 @@ const getData = async (stop_id) => {
     }
     const routes = await getEachRouteData(reqRoutes);
     //---------------------------------------------
+    // ここまで11秒(2019/11/24)
     console.timeEnd('getData');
     return routes
 }
