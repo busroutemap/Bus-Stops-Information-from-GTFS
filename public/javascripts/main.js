@@ -45,51 +45,56 @@ const stopDesc = {
 
 const rows = {
     props: ['stop'],
-    components: {
-        fare: fare,
-        period: period,
-        line: line,
-        stopName: stopName,
-        stopDesc: stopDesc
-    },
-    // 面倒なので、ここまでコンポーネント化しないでも良い説
-    // {{stop.fare}}{{stop.period}}など
+    // components: {
+    //     fare: fare,
+    //     period: period,
+    //     line: line,
+    //     stopName: stopName,
+    //     stopDesc: stopDesc
+    // },
     // v-showで何かstop.stop_descに値がある場合のみ表示
-    template: `
-    <p>
-    <fare
-        v-bind:stop="stop"
-    ></fare>
-    <period
-        v-bind:stop="stop"
-    ></period>
-    <line
-        v-bind:stop="stop"
-    ></line>
-    <stopName
-        v-bind:stop="stop"
-    ></stopName>
-    <stopDesc
-        v-bind:stop="stop"
-        v-show="stop.stop_desc"
-    ></stop_desc>
-    </p>
-    <br>
-    `
+    // template: `
+    // <p>
+    // <span>{{stop.fare}}</span>
+    // <span>{{stop.period}}</span>
+    // <span>{{stop.line}}</span>
+    // <span>{{stop.stopName}}</span>
+    // <span
+    //     v-bind:stop="stop"
+    //     v-show="stop.stop_desc">
+    // {{stop.stopDesc}}</span>
+    // </p>
+    // `
 };
+
+{/* <period
+v-bind:stop="stop"
+></period>
+<line
+v-bind:stop="stop"
+></line>
+<stopName
+v-bind:stop="stop"
+></stopName>
+<stopDesc
+v-bind:stop="stop"
+v-show="stop.stop_desc"
+></stop_desc>
+</p>
+<br> */}
 
 const routeInfo = {
     props: ['route'],
-    template: `
-    <p>
-    <ol>
-        <li>{{route.route_short_name}}</li>
-        <li>{{route.route_long_name}}</li>
-        <li>{{route.jp_parent_route_id}}</li>
-        <li>{{route.agency_key}}</li>
-    </ol>
-    </p>
-    `
+    // template: `
+    // <p>
+    // <ol>
+    //     <li>{{route.route_short_name}}</li>
+    //     <li>{{route.route_long_name}}</li>
+    //     <li>{{route.jp_parent_route_id}}</li>
+    //     <li>{{route.agency_key}}</li>
+    // </ol>
+    // </p>
+    // `
 };
 
 const routeArea = {
@@ -97,17 +102,7 @@ const routeArea = {
     components: {
         routeInfo: routeInfo,
         rows: rows
-    },
-    template: `
-    <routeInfo
-        v-bind:route="route"
-    ></routeInfo>
-    <rows
-        v-for="stop in route.stops"
-        v-bind:key="stop.stop_id"
-        v-bind:stop="stop"
-    ></rows>
-    `
+    }
 };
 
 //---------------------------------------------
@@ -141,15 +136,6 @@ let app = new Vue({
         // routes: function (val, _oldVal) {
         //     return this.routes
         // },
-        // eachStops: function (val, _oldVal) {
-        //     this.drawGTFS(val);
-        // },
-        // ruleLists: function (val, _oldVal) {
-        //     this.drawGTFS(val);
-        // },
-        // periods: function (val, _oldVal) {
-        //     this.drawGTFS(val);
-        // }
     },
     methods: {
         /**
@@ -167,19 +153,7 @@ let app = new Vue({
                 return response.json();
             })
             .then((myJson) => {
-                console.log(myJson);
-                try {
-                    // const newData = JSON.parse(myJson);
-                    // console.log("成功");
-                    // app.routes = newData;
-                    app.routes = myJSON;
-                    // 失敗
-                } catch (error) {
-                    console.log("パースできませんでした");
-                }
-                // this.eachStops = newData.eachStops;
-                // this.ruleLists = newData.ruleLists;
-                // this.periods = newData.periods;
+                app.routes = myJson;
             });
         }
     }

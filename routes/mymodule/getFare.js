@@ -23,6 +23,9 @@ const getFare = async(route,originStop,destinationStop) => {
     .then(rule=>{
         return rule
     });
+    if (rule[0]===undefined){
+        return undefined
+    }
     const Schema = mongoose.Schema;
     const fareSchema = new Schema({
         fare_id : {
@@ -34,20 +37,22 @@ const getFare = async(route,originStop,destinationStop) => {
             type : Number
         }
     });
+    // なお、円が設定されていない場合もある
+    // (通過済みなど)
+
     const FareModel = mongoose.model('Fare', fareSchema,'fareattributes');
     const find = (rule) => {
         let fare = FareModel.findOne({
-            fare_id : rule.fare_id
+            fare_id : rule[0].fare_id
             },{
                 _id : 0,
-                fare_id : 0,
                 price : 1
             })
-        return fare.price
+        return fare
     }
     const price = await find(rule);
     mongoose.deleteModel('Fare');
-    return price;
+    return price.price;
 }
 
 module.exports = getFare

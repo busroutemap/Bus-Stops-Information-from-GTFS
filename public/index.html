@@ -11,17 +11,41 @@
     <routeArea 
         v-for="route in routes"
         v-bind:key="route.route_id"
-        v-bind:route.sync="route"
-    >
+        v-bind:route="route">
+    <routeInfo
+        v-bind:route="route">
+        <p>
+            <ol>
+                <li>{{route.route_short_name}}</li>
+                <li>{{route.route_long_name}}</li>
+                <li>{{route.jp_parent_route_id}}</li>
+                <li>{{route.agency_key}}</li>
+            </ol>
+            </p>
+    </routeInfo>
+    <rows
+    v-for="stop in route.stops"
+    v-bind:key="stop.stop_id"
+    v-bind:stop="stop">
+        <p style="
+        line-height: 15px;
+        font-size: 12px;
+        margin: 0">
+        <span
+        v-if="stop.fare">{{stop.fare}}円</span>
+        <span
+        v-else>---</span>
+        <span>{{stop.period}}分</span>
+        <span style="color:red">●</span><span>{{stop.line}}</span>
+        <span>{{stop.stop_name}}</span>
+        <span
+        v-bind:stop="stop"
+        v-show="stop.stop_desc">
+        {{stop.stopDesc}}</span>
+        </p>
+    </rows>
+    <hr>
     </routeArea>
-    <!-- 以下は画像化部分 -->
-    <!-- <button onclick="app.saveImg()">canvasをpngにする</button>
-    <ol>
-        <li v-for="mes in contents">
-            {{ mes }}
-        </li>
-    </ol>
-    <img ref="img" sec=""> -->
 </div>
 <script src="./javascripts/main.js"></script>
 </body>

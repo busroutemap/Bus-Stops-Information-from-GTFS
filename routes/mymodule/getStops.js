@@ -25,6 +25,7 @@ const getStops = async (route,originStop,mTrip) => {
     })
     for (let stop of stops){
         stop.fare = await getFare(route,originStop,stop);
+        // console.log(stop.fare);
         stop.period = await getPeriod(mTrip,originStop,stop);
     }
     return stops;
