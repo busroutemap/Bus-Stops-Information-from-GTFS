@@ -7,106 +7,31 @@
 // import routeArea from './routeArea'
 // import rows from './rows'
 
-const fare = {
-    props: ['stop'],
-    template: `
-    <span>{{stop.fare}}円 </span>
-    `
-};
-
-const period = {
-    props: ['stop'],
-    template: `
-    <span>{{stop.period}}分 </span>
-    `
-};
-
-// 注:lineは今手抜き
-const line = {
-    template: `
-    <span style="color:red">●</span>
-    `
-};
-
-const stopName = {
-    props: ['stop'],
-    template: `
-    <span>{{stop.stop_name}}</span>
-    `
-};
-
-const stopDesc = {
-    props: ['stop'],
-    template: `
-    <span style="color:red">{{stop.stop_desc}}</span>
-    `
-};
-
-
 const rows = {
+    name : "rows",
     props: ['stop'],
-    // components: {
-    //     fare: fare,
-    //     period: period,
-    //     line: line,
-    //     stopName: stopName,
-    //     stopDesc: stopDesc
-    // },
-    // v-showで何かstop.stop_descに値がある場合のみ表示
-    // template: `
-    // <p>
-    // <span>{{stop.fare}}</span>
-    // <span>{{stop.period}}</span>
-    // <span>{{stop.line}}</span>
-    // <span>{{stop.stopName}}</span>
-    // <span
-    //     v-bind:stop="stop"
-    //     v-show="stop.stop_desc">
-    // {{stop.stopDesc}}</span>
-    // </p>
-    // `
+    template: "#rows"
 };
 
-{/* <period
-v-bind:stop="stop"
-></period>
-<line
-v-bind:stop="stop"
-></line>
-<stopName
-v-bind:stop="stop"
-></stopName>
-<stopDesc
-v-bind:stop="stop"
-v-show="stop.stop_desc"
-></stop_desc>
-</p>
-<br> */}
-
-const routeInfo = {
+const routeinfo = {
+    name : "route-info",
     props: ['route'],
-    // template: `
-    // <p>
-    // <ol>
-    //     <li>{{route.route_short_name}}</li>
-    //     <li>{{route.route_long_name}}</li>
-    //     <li>{{route.jp_parent_route_id}}</li>
-    //     <li>{{route.agency_key}}</li>
-    // </ol>
-    // </p>
-    // `
+    template: "#route-info"
 };
 
-const routeArea = {
+const routearea = {
+    name : "route-area",
     props: ['route'],
+    template:"#route-area",
     components: {
-        routeInfo: routeInfo,
-        rows: rows
+        "route-info" : routeinfo,
+        "rows" : rows
     }
 };
 
 //---------------------------------------------
 let app = new Vue({
+    el : "#view",
     data() {
         return {
             stop_id: '',
@@ -120,12 +45,12 @@ let app = new Vue({
         // 1値に依存して動作する系は、本来はここ？
     },
     components: {
-        routeArea: routeArea,
+        "route-area" : routearea,
     },
     mounted() {
-        // 仮に「本町」を指定
-        // this.stop_id = 'S00436AGC9070001018357H001';
-        // this.getGTFSapi(this.stop_id);
+        // 仮に「敷島公園北」を指定
+        this.stop_id = 'S00525AGC9070001018357H001';
+        this.getGTFSapi(this.stop_id);
         // this.canvas = this.$refs.canvas;
         // this.context = this.canvas.getContext("2d");
     },
@@ -157,5 +82,5 @@ let app = new Vue({
             });
         }
     }
-}).$mount('#view');
+});
 //---------------------------------------------
