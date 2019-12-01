@@ -3,17 +3,11 @@
 <head>
 <meta charset="utf-8">
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" type="text/css" href="./stylesheets/main.css">
 </head>
 <body style="background-color:ghostwhite">
-<div id="view">
-    <input v-model="stop_id" placeholder="stop_idを入力">
-    <span>選択id : {{ stop_id }}</span>
-    <routeArea 
-        v-for="route in routes"
-        v-bind:key="route.route_id"
-        v-bind:route="route">
-    <routeInfo
-        v-bind:route="route">
+    <template id="route-info">
+    <div>
         <p>
             <ol>
                 <li>{{route.route_short_name}}</li>
@@ -21,31 +15,43 @@
                 <li>{{route.jp_parent_route_id}}</li>
                 <li>{{route.agency_key}}</li>
             </ol>
-            </p>
-    </routeInfo>
-    <rows
-    v-for="stop in route.stops"
-    v-bind:key="stop.stop_id"
-    v-bind:stop="stop">
-        <p style="
-        line-height: 15px;
-        font-size: 12px;
-        margin: 0">
-        <span
-        v-if="stop.fare">{{stop.fare}}円</span>
-        <span
-        v-else>---</span>
+        </p>
+    </div>
+    </template>
+    <template id="rows">
+    <div>
+        <p class="row-style">
+        <span v-if="stop.fare">{{stop.fare}}円</span>
+        <span v-else>---</span>
         <span>{{stop.period}}分</span>
-        <span style="color:red">●</span><span>{{stop.line}}</span>
+        <span class="row-stopicon">●</span>
         <span>{{stop.stop_name}}</span>
         <span
         v-bind:stop="stop"
         v-show="stop.stop_desc">
         {{stop.stopDesc}}</span>
         </p>
-    </rows>
-    <hr>
-    </routeArea>
+    </div>
+    </template>
+    <template id="route-area">
+    <div>
+        <route-info
+        v-bind:route="route"></route-info>
+        <rows
+        v-for="stop in route.stops"
+        v-bind:key="stop.stop_id"
+        v-bind:stop="stop"
+        v-bind:route="route"></rows>
+        <hr>
+    </div>
+    </template>
+    <div id="view">
+    <input v-model="stop_id" placeholder="stop_idを入力">
+    <span>選択id : {{ stop_id }}</span>
+    <route-area
+    v-for="route in routes"
+    v-bind:key="route.route_id"
+    v-bind:route="route"></route-area>
 </div>
 <script src="./javascripts/main.js"></script>
 </body>
