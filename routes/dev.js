@@ -11,7 +11,10 @@ const config = {
 //---------------------------------------------
 const api = async function(req, res, next){
     mongoose.set('useCreateIndex', true);
-    mongoose.connect(config.mongoUrl, {useNewUrlParser: true});
+    mongoose.connect(config.mongoUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
     // http://localhost:3000/dev/?stop_id="id指定"
     // http://localhost:3000/dev/?stop_id=S00525AGC9070001018357H001
     // 敷島公園北
