@@ -29,8 +29,7 @@ const api = async function(req, res, next){
 }
 //---------------------------------------------
 // apis配列に記述していく順に各ミドルウェアが実行
-const apis = [api]
-// http://localhost:3000/dev/
-router.get('/', apis);
+// http://localhost:3000/api/
+router.get('/', api);
 
 module.exports = router;

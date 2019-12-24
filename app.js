@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 // devRouter定義
-var devRouter = require('./routes/dev');
+var apiRouter = require('./routes/api');
 
 var app = express();
 
@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 // devRouter追加
-app.use('/dev', devRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
