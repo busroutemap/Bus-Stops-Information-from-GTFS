@@ -69,7 +69,7 @@ let app = new Vue({
          * @returns (watch中の各値が更新される)
          */
         getGTFSapi:(stop_id)=> {
-            const baseURL = 'http://localhost:3000/dev/?stop_id=';
+            const baseURL = 'http://localhost:3000/api/?stop_id=';
             fetch(baseURL + stop_id)
             .catch((e) => {
                 console.log(e);
