@@ -5,7 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <link rel="stylesheet" type="text/css" href="./stylesheets/main.css">
 </head>
-<body style="background-color:ghostwhite">
+<body>
     <template id="route-info">
     <div>
         <p>
@@ -21,15 +21,15 @@
     <template id="rows">
     <div>
         <p class="row-style">
-        <span v-if="stop.fare">{{stop.fare}}円</span>
-        <span v-else>---</span>
-        <span>{{stop.period}}分</span>
-        <span class="row-stopicon">●</span>
-        <span>{{stop.stop_name}}</span>
+        <span class="fare" v-if="stop.fare">{{stop.fare}}円</span>
+        <span class="fare" v-else>---</span>
+        <span class="period">{{stop.period}}分</span>
+        <span class="row-stopicon"></span>
+        <span class="stopname">{{stop.stop_name}}</span>
         <span
-        v-bind:stop="stop"
+        class="stopdesc"
         v-show="stop.stop_desc">
-        {{stop.stopDesc}}</span>
+        {{stop.stop_desc}}</span>
         </p>
     </div>
     </template>
