@@ -73,6 +73,22 @@ let app = new Vue({
             .then((myJson) => {
                 app.routes = myJson;
             });
+        },
+        // index内でpdfmakeとhtml2canvasを呼び出し済み
+        // exportPDF()
+        exportPDF : (prop)=>{
+            // 公式だとpropはdocument.querySelector(#id)
+            html2canvas(prop).then(canvas => {
+                const pdfContent = {
+                    content: [
+                        {
+                            // 間違っている気がする
+                            image : canvas.toDataURL
+                        }
+                    ]
+                };
+                pdfMake.createPdf(pdfContent).download();
+            });
         }
     }
 });

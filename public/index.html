@@ -2,8 +2,16 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<!-- (1)vuejs -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- (2)CSS -->
 <link rel="stylesheet" type="text/css" href="./stylesheets/main.css">
+<!-- (3)PDFmake -->
+<script src='javascripts/pdfmake/pdfmake.min.js'></script>
+<!-- 今回canvasしか使わないので、フォントは不要だと思われる -->
+<!-- <script src='javascripts/pdfmake/vfs_fonts.js'></script> -->
+<!-- (4)html2canvas -->
+<script src='javascripts/html2canvas/html2canvas.min.js'></script>
 </head>
 <body>
     <template id="route-info">
@@ -37,6 +45,7 @@
     <div>
         <route-info
         v-bind:route="route"></route-info>
+        <button onload="exportPDF(this.$refs);">この系統をPDF出力</button>
         <rows
         v-for="stop in route.stops"
         v-bind:key="stop.stop_id"
