@@ -1,11 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable camelcase */
-/* eslint-disable func-names */
-/* eslint-disable object-shorthand */
-/* eslint-disable indent */
-/* eslint-disable linebreak-style */
-// import routeArea from './routeArea'
-// import rows from './rows'
+
 
 const rows = {
     name : "rows",
