@@ -12,6 +12,8 @@
 <!-- <script src='javascripts/pdfmake/vfs_fonts.js'></script> -->
 <!-- (4)html2canvas -->
 <script src='javascripts/html2canvas/html2canvas.min.js'></script>
+<!-- (5)臨時のjsPDF -->
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
 </head>
 <body>
     <template id="route-info">
@@ -42,10 +44,11 @@
     </div>
     </template>
     <template id="route-area">
-    <div>
+    <div class="ra">
         <route-info
         v-bind:route="route"></route-info>
-        <button onload="exportPDF(this.$refs);">この系統をPDF出力</button>
+        <button
+        v-on:click="exportPDF(route.route_id)">PDF出力</button>
         <rows
         v-for="stop in route.stops"
         v-bind:key="stop.stop_id"
@@ -55,12 +58,12 @@
     </div>
     </template>
     <div id="view">
-    <input v-model="stop_id" placeholder="stop_idを入力">
-    <span>選択id : {{ stop_id }}</span>
-    <route-area
-    v-for="route in routes"
-    v-bind:key="route.route_id"
-    v-bind:route="route"></route-area>
-</div>
+        <input v-model="stop_id" placeholder="stop_idを入力">
+        <span>選択id : {{ stop_id }}</span>
+        <route-area
+        v-for="route in routes"
+        v-bind:key="route.route_id"
+        v-bind:route="route"></route-area>
+    </div>
 <script src="./javascripts/main.js"></script>
 </body>
