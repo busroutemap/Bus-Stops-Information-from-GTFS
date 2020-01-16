@@ -3,23 +3,16 @@ body{
     background-color:ghostwhite;
 }
 .row-style{
-    line-height: 15px;
+    line-height: 20px;
     font-size: 12px;
     margin: 0;
-    width:50%;
+    width:100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 12px 6fr 6fr;
-    /* column-gap: 10px; */
+    grid-template-columns: 1fr 1fr 12px 12px 6fr 1fr;
+    column-gap: 4px;
     margin: 0px;
 }
-.row-stopicon{
-    width:12px;
-    height:12px;
-    background-color:red;
-    border-radius: 100%;
-    /* position: relative; */
-    margin: 0px;
-}
+
 .fare{
     grid-column: 1 / 2;
     text-align: center;
@@ -27,16 +20,26 @@ body{
 .period{
     grid-column: 2 / 3;
     text-align: center;
+    border-bottom: solid 1px black;
 }
 .row-stopicon{
-    grid-column: 3 / 4;
+    grid-column: 3 / 5;
     text-align: center;
+    width:12px;
+    height:12px;
+    background-color:red;
+    border-radius: 100%;
+    margin: 4px 0 0 6px;
 }
 .stopname{
-    grid-column: 4 / 5;
-    /* text-align: center; */
-}
-.stopdesc{
     grid-column: 5 / 6;
     /* text-align: center; */
+    border-bottom: solid 1px black;
+}
+.stopdesc{
+    grid-column: 6 / 7;
+    /* text-align: center; */
+}
+.ra{
+    width:400px;
 }
