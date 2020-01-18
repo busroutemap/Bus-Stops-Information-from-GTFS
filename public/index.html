@@ -30,7 +30,8 @@
         <span class="fare" v-else>---</span>
         <span class="period">{{stop.period}}分</span>
         <span class="row-stopicon"></span>
-        <span class="stopname">{{stop.stop_name}}</span>
+        <span class="herestop" v-if="stop.stop_id==app.stop_id">{{stop.stop_name}}</span>
+        <span class="stopname" v-else>{{stop.stop_name}}</span>
         <span
         class="stopdesc"
         v-show="stop.stop_desc">
@@ -53,7 +54,6 @@
         </div>
         <div v-bind:id="'canvas' + route.route_id" class="ra_canvas">
         </div>
-        <hr>
     </div>
     </template>
     <div id="view">
