@@ -63,7 +63,7 @@ body{
     grid-row: 2 / 3;
     text-align: center;
     padding: 2%;
-    border: double 1px black;
+    border: double 4px black;
     background-color: white;
 }
 .stopdesc{

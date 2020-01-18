@@ -30,7 +30,7 @@
         <span class="fare" v-else>---</span>
         <span class="period">{{stop.period}}分</span>
         <span class="row-stopicon"></span>
-        <span class="herestop" v-if="stop.stop_id==app.stop_id">{{stop.stop_name}}</span>
+        <span class="herestop" v-if="here_id==stop.stop_id">{{stop.stop_name}}</span>
         <span class="stopname" v-else>{{stop.stop_name}}</span>
         <span
         class="stopdesc"
@@ -50,6 +50,7 @@
             v-for="stop in route.stops"
             v-bind:key="stop.stop_id"
             v-bind:stop="stop"
+            v-bind:here_id="here_id"
             v-bind:route="route"></rows>
         </div>
         <div v-bind:id="'canvas' + route.route_id" class="ra_canvas">
@@ -61,6 +62,7 @@
         <span>選択id : {{ stop_id }}</span>
         <hr>
         <route-area
+        v-bind:here_id="stop_id"
         v-for="route in routes"
         v-bind:key="route.route_id"
         v-bind:route="route"></route-area>

@@ -2,7 +2,7 @@
 
 const rows = {
     name : "rows",
-    props: ['stop'],
+    props: ['stop','here_id'],
     template: "#rows"
 };
 
@@ -14,7 +14,7 @@ const routeinfo = {
 
 const routearea = {
     name : "route-area",
-    props: ['route'],
+    props: ['route','here_id'],
     template:"#route-area",
     components: {
         "route-info" : routeinfo,
