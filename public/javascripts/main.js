@@ -22,13 +22,7 @@ const routearea = {
     },
     methods:{
         exportPDF : (route_id)=>{
-            // まずidを振る
-            let ra = document.getElementsByClassName("ra");
-            for(let i = 0; i < app.routes.length; i++){
-                ra.item(i).setAttribute("id",app.routes[i].route_id);
-            }
-            //---------------------------------------------
-            const prop = document.querySelector("#" + route_id);
+            const prop = document.querySelector("#pdf" + route_id);
             html2canvas(prop).then(canvas => {
                 const imgdata = canvas.toDataURL();
                 const pdfContent = {
@@ -42,6 +36,7 @@ const routearea = {
                         }
                     ]
                 };
+                document.querySelector("#canvas" + route_id).appendChild(canvas);
                 pdfMake.createPdf(pdfContent).download("exportData.pdf");
             });
         }
@@ -55,9 +50,6 @@ let app = new Vue({
         return {
             stop_id: '',
             routes: '',
-            // eachStops : '',
-            // ruleLists : '',
-            // periods : ''
         };
     },
     computed: {
@@ -68,18 +60,14 @@ let app = new Vue({
     },
     mounted() {
         // 仮に「敷島公園北」を指定
-        this.stop_id = 'S00525AGC9070001018357H001';
-        // this.getGTFSapi(this.stop_id);
-        // this.canvas = this.$refs.canvas;
-        // this.context = this.canvas.getContext("2d");
+        // this.stop_id = 'S00525AGC9070001018357H001';
+        // 61_2は両備バス「大雲寺前」
+        this.stop_id='61_2'
     },
     watch: {
         stop_id: function (val, _oldVal) {
             this.getGTFSapi(val);
         },
-        // routes: function (val, _oldVal) {
-        //     return this.routes
-        // },
     },
     methods: {
         /**
@@ -103,17 +91,3 @@ let app = new Vue({
     }
 });
 //---------------------------------------------
-
-
-// function downloadImage() {
-//     html2canvas(document.body, {
-//         onrendered: function(canvas) {
-//             // var dataURI = canvas.toDataURL();
-//             var pdf = new jsPDF();
-//             // 横幅をぴったり合わせたかったので横幅を取得して指定してます
-//             var width = pdf.internal.pageSize.width;
-//             pdf.addImage(canvas, 'JPEG', 0, 0, width, 0);
-//             pdf.save('test.pdf');
-//         }
-//     });
-// }

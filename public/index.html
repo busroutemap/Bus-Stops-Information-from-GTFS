@@ -44,13 +44,17 @@
     <div class="ra">
         <button
         v-on:click="exportPDF(route.route_id)">この運行系統図をPDF出力する</button>
-        <route-info
-        v-bind:route="route"></route-info>
-        <rows
-        v-for="stop in route.stops"
-        v-bind:key="stop.stop_id"
-        v-bind:stop="stop"
-        v-bind:route="route"></rows>
+        <div v-bind:id="'pdf' + route.route_id" class="ra_pdf">
+            <route-info
+            v-bind:route="route"></route-info>
+            <rows
+            v-for="stop in route.stops"
+            v-bind:key="stop.stop_id"
+            v-bind:stop="stop"
+            v-bind:route="route"></rows>
+        </div>
+        <div v-bind:id="'canvas' + route.route_id" class="ra_canvas">
+        </div>
         <hr>
     </div>
     </template>
