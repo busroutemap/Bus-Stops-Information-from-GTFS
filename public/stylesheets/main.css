@@ -63,5 +63,15 @@ body{
     grid-row: 2 / 3;
 }
 .ra{
-    width:900px;
+    width:1800px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.ra_pdf{
+    /* width:50%; */
+    grid-column: 1 / 2;
+}
+.ra_canvas{
+    /* width:50%; */
+    grid-column: 2 / 3;
 }
