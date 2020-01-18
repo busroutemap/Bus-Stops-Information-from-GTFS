@@ -19,15 +19,10 @@
 </head>
 <body>
     <template id="route-info">
-    <div>
-        <p>
-            <ol>
-                <li>{{route.route_short_name}}</li>
-                <li>{{route.route_long_name}}</li>
-                <li>{{route.jp_parent_route_id}}</li>
-                <li>{{route.agency_key}}</li>
-            </ol>
-        </p>
+    <div class="ri00">
+        <p class="ri01">{{route.route_short_name}}</p>
+        <p class="ri02">{{route.route_long_name}} ( {{route.jp_parent_route_id}} )</p>
+        <p class="ri03">{{route.agency_key}}</p>
     </div>
     </template>
     <template id="rows">
@@ -47,10 +42,10 @@
     </template>
     <template id="route-area">
     <div class="ra">
+        <button
+        v-on:click="exportPDF(route.route_id)">この路線をPDF出力する</button>
         <route-info
         v-bind:route="route"></route-info>
-        <button
-        v-on:click="exportPDF(route.route_id)">PDF出力</button>
         <rows
         v-for="stop in route.stops"
         v-bind:key="stop.stop_id"
@@ -62,6 +57,7 @@
     <div id="view">
         <input v-model="stop_id" placeholder="stop_idを入力">
         <span>選択id : {{ stop_id }}</span>
+        <hr>
         <route-area
         v-for="route in routes"
         v-bind:key="route.route_id"
