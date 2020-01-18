@@ -55,6 +55,7 @@ body{
     grid-row: 2 / 3;
     text-align: center;
     padding: 2%;
+    border-radius: 20px;
     border: solid 1px black;
     background-color: white;
 }
@@ -63,7 +64,8 @@ body{
     grid-row: 2 / 3;
     text-align: center;
     padding: 2%;
-    border: double 4px black;
+    border-radius: 20px;
+    border: solid 3px black;
     background-color: white;
 }
 .stopdesc{

@@ -30,7 +30,7 @@
         <span class="fare" v-else>---</span>
         <span class="period">{{stop.period}}分</span>
         <span class="row-stopicon"></span>
-        <span class="herestop" v-if="here_id==stop.stop_id">{{stop.stop_name}}</span>
+        <span class="herestop" v-if="here_id==stop.stop_id">{{stop.stop_name}}(現在地)</span>
         <span class="stopname" v-else>{{stop.stop_name}}</span>
         <span
         class="stopdesc"
