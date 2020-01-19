@@ -42,6 +42,7 @@
     <template id="route-area">
     <div class="ra">
         <button
+        class="ra_button"
         v-on:click="exportPDF(route.route_id)">この運行系統図をPDF出力する</button>
         <div v-bind:id="'pdf' + route.route_id" class="ra_pdf">
             <route-info
@@ -61,11 +62,13 @@
         <input v-model="stop_id" placeholder="stop_idを入力">
         <span>選択id : {{ stop_id }}</span>
         <hr>
+        <div id="wrapbox">
         <route-area
         v-bind:here_id="stop_id"
         v-for="route in routes"
         v-bind:key="route.route_id"
         v-bind:route="route"></route-area>
+        </div>
     </div>
 <script src="./javascripts/main.js"></script>
 </body>

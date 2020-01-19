@@ -2,6 +2,9 @@
 body{
     background-color:azure;
 }
+#wrapbox{
+    display: flex;
+}
 .row-style{
     line-height: 20px;
     font-size: 18px;
@@ -22,7 +25,7 @@ body{
 }
 .ri02{
     font-size: 18px;
-    border-bottom: dotted 2px black;
+    border-bottom: solid 1px black;
     padding: 0px;
     margin:0;
 }
@@ -43,7 +46,7 @@ body{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
     text-align: center;
-    border-bottom: dashed 2px black;
+    border-bottom: solid 2px black;
 }
 .row-stopicon{
     grid-column: 5 / 6;
@@ -72,17 +75,20 @@ body{
     grid-column: 7 / 8;
     grid-row: 2 / 3;
 }
+/* routeArea */
 .ra{
-    width:1800px;
+    width:900px;
+    min-width: 900px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 40px 1fr 1fr;
     border-bottom: solid 2px black;
 }
+.ra_button{
+    grid-row: 1 / 2;
+}
 .ra_pdf{
-    /* width:50%; */
-    grid-column: 1 / 2;
+    grid-row: 2 / 3;
 }
 .ra_canvas{
-    /* width:50%; */
-    grid-column: 2 / 3;
+    grid-row: 3 / 4;
 }
