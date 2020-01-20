@@ -51,20 +51,11 @@ let app = new Vue({
             stop_id: '',
             route_id:'', /* 選択されたroute_id */
             routes: '',
+            route:''
         };
     },
     computed: {
         // 1値に依存して動作する系は、本来はここ？
-        route : ()=>{
-            // app?this?
-            for (route of app.routes){
-                console.log("success");
-                if (route.route_id == app.route_id){
-                    return route;
-                }
-            }
-            return;
-        }
     },
     components: {
         "route-area" : routearea,
@@ -73,12 +64,20 @@ let app = new Vue({
         // 仮に「敷島公園北」を指定
         // this.stop_id = 'S00525AGC9070001018357H001';
         // 61_2は両備バス「大雲寺前」
-        this.stop_id='61_2'
+        this.stop_id='61_2';
     },
     watch: {
-        stop_id: function (val, _oldVal) {
-            this.getGTFSapi(val);
-        },
+        // stop_id: function (val, _oldVal) {
+        //     this.getGTFSapi(val);
+        // },
+        route_id: function (val, _oldVal){
+            for (const route of this.routes){
+                // valのうち1つ1つ取り出して確認
+                if (route.route_id == this.route_id){
+                    this.route = route;
+                }
+            }
+        }
     },
     methods: {
         /**

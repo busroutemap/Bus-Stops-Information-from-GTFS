@@ -61,6 +61,10 @@
     <div id="view">
         <h1>1.停留所選択</h1>
         <input v-model="stop_id" placeholder="stop_idを入力">
+        <button
+        type="submit"
+        v-bind:stop_id="stop_id"
+        v-on:click="getGTFSapi(stop_id)">送信</button>
         <span id="status">準備完了!</span>
         <!-- <hr> -->
         <h1>2.路線選択</h1>
