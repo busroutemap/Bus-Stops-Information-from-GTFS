@@ -49,11 +49,22 @@ let app = new Vue({
     data() {
         return {
             stop_id: '',
+            route_id:'', /* 選択されたroute_id */
             routes: '',
         };
     },
     computed: {
         // 1値に依存して動作する系は、本来はここ？
+        route : ()=>{
+            // app?this?
+            for (route of app.routes){
+                console.log("success");
+                if (route.route_id == app.route_id){
+                    return route;
+                }
+            }
+            return;
+        }
     },
     components: {
         "route-area" : routearea,
@@ -77,15 +88,18 @@ let app = new Vue({
          */
         getGTFSapi:(stop_id)=> {
             const baseURL = 'http://localhost:3000/api/?stop_id=';
+            document.getElementById("status").textContent = "データ取得中...";
             fetch(baseURL + stop_id)
             .catch((e) => {
                 console.log(e);
+                document.getElementById("status").textContent = e;
             })
             .then((response) => {
                 return response.json();
             })
             .then((myJson) => {
                 app.routes = myJson;
+                document.getElementById("status").textContent = "取得完了!";
             });
         },
     }
