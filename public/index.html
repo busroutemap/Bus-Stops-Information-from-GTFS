@@ -62,7 +62,7 @@
         <h1>1.停留所選択</h1>
         <input v-model="stop_id" placeholder="stop_idを入力">
         <span id="status">準備完了!</span>
-        <hr>
+        <!-- <hr> -->
         <h1>2.路線選択</h1>
         <select v-model="route_id">
             <option disabled value="">路線を選択してください</option>
@@ -74,7 +74,7 @@
             {{route.route_long_name}}
             </option>
         </select>
-        <hr>
+        <!-- <hr> -->
         <h1>3.系統運行図描画</h1>
         <div id="wrapbox">
             <route-area
