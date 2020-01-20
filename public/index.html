@@ -59,15 +59,33 @@
     </div>
     </template>
     <div id="view">
+        <h1>1.停留所選択</h1>
         <input v-model="stop_id" placeholder="stop_idを入力">
-        <span>選択id : {{ stop_id }}</span>
+        <span id="status">準備完了!</span>
         <hr>
+        <h1>2.路線選択</h1>
+        <select v-model="route_id">
+            <option disabled value="">路線を選択してください</option>
+            <option
+            v-for="route in routes"
+            v-bind:key="route.route_id"
+            v-bind:value="route.route_id">
+            {{route.route_short_name}} /
+            {{route.route_long_name}}
+            </option>
+        </select>
+        <hr>
+        <h1>3.系統運行図描画</h1>
         <div id="wrapbox">
-        <route-area
+            <route-area
+            v-bind:here_id="stop_id"
+            v-bind:route="route"
+            ></route-area>
+            <!-- <route-area
         v-bind:here_id="stop_id"
         v-for="route in routes"
         v-bind:key="route.route_id"
-        v-bind:route="route"></route-area>
+        v-bind:route="route"></route-area> -->
         </div>
     </div>
 <script src="./javascripts/main.js"></script>

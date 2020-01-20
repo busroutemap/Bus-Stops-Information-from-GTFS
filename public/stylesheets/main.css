@@ -2,9 +2,23 @@
 body{
     background-color:azure;
 }
-#wrapbox{
-    display: flex;
+h1{
+    border-left: dotted 5px brown;
+    border-bottom : solid 2px burlywood;
+    padding : 10px;
+    font-size : 24px;
+    width : 400px;
 }
+select{
+    font-size : 18px;
+}
+#status{
+    font-size: 30px;
+    border-bottom: double 2px black;
+}
+/* #wrapbox{
+    display: flex;
+} */
 .row-style{
     line-height: 20px;
     font-size: 18px;
@@ -79,9 +93,11 @@ body{
 .ra{
     width:900px;
     min-width: 900px;
+    height:auto;
     display: grid;
     grid-template-rows: 40px 1fr 1fr;
     border-bottom: solid 2px black;
+    margin : 20px
 }
 .ra_button{
     grid-row: 1 / 2;
