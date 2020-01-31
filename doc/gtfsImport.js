@@ -9,6 +9,7 @@ const config = {
             // 管理者が付与する、GTFSデータ固有id
             agency_key: 'BSI_sample01',
             // url(インターネット経由)またはpath(PC内)で指定
+            // 取り込みたいGTFS-JPに応じて適宜変えること
             url: 'http://loc.bus-vision.jp/gtfs/ryobi/gtfsFeed',
             // path: "/path/to/the/gtfs.zip"
             exclude: [
