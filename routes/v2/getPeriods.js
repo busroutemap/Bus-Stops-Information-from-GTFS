@@ -9,9 +9,9 @@ const gtfs = require('gtfs');
  * @param hereTime 系統ごとに1つあるであろう選択停留所の時刻情報
  * @returns periods 所要時間Numberの配列
  */
-const getPeriods = (trip,hereTime) => {
+const getPeriods = async(trip,hereTime) => {
     // 1度便の時刻を全部算出し、引数の時刻から所要時間を算出
-    const stopTimes = gtfs.getStoptimes({
+    const stopTimes = await gtfs.getStoptimes({
         trip_id : trip.trip_id,
         agency_key : trip.agency_key,
         route_id : trip.route_id
@@ -31,7 +31,7 @@ const getPeriods = (trip,hereTime) => {
     const yy = 2016;
     const mm = 4;
     const dd = 4;
-    let periods;
+    let periods=[];
     for (let aimTime of stopTimes){
         const a_here = hereTime.arrival_time.split(":");
         const a_aim = aimTime.arrival_time.split(":");

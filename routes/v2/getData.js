@@ -8,7 +8,7 @@ const getPeriods = require('./getPeriods');
  * mongoDBにアクセスし、GTFSの系統・停留所・運賃・時刻を取り出す
  * @param stop_id ユーザーからURLのQueryで指定された、単一停留所
  */
-const getData = (stop_id) => {
+const getData = async(stop_id) => {
     // 最初にdataをletで指定
     // data.routes
     // data.here
@@ -16,7 +16,7 @@ const getData = (stop_id) => {
     // data.ERperiods
     // data.ERstops
     // data.ALprices
-    let data;
+    let data={};
     console.time(stop_id);
     //---------------------------------------------
     // p_routes
@@ -59,7 +59,7 @@ const getData = (stop_id) => {
     });
     //---------------------------------------------
     // 系統、現在停留所の取得の一括処理
-    Promise.all(p_routes,p_here)
+    await Promise.all([p_routes,p_here])
     .catch(e=>{
         console.log(e);
     })
@@ -135,7 +135,7 @@ const getData = (stop_id) => {
                 console.log(e);
             })
             .then(hereTime => {
-                return(getPeriods(trip,hereTime));
+                return(getPeriods(trip,hereTime[0]));
             });
             return(tmpPeriods);
         });
@@ -163,7 +163,7 @@ const getData = (stop_id) => {
     //---------------------------------------------
     // 路線ごとの3種データ取得の一括処理
     // EachRoutesの略
-    Promise.all(p_ERfareRules,p_ERperiods,p_ERstops)
+    await Promise.all([p_ERfareRules,p_ERperiods,p_ERstops])
     .catch(e=>{
         console.log(e);
     })
@@ -177,6 +177,7 @@ const getData = (stop_id) => {
     // p_price
     // 自分でSchemaを定義しDBにデータを入れていれば、
     // 本当は.populateを使って運賃定義情報と一緒に取得できるはず
+    // いつものモデルoverwriteエラー
     const Schema = mongoose.Schema;
     const fareSchema = Schema({
         // const fareSchema = new Schema({
@@ -208,7 +209,7 @@ const getData = (stop_id) => {
             return attributes
         })
     //---------------------------------------------
-    Promise.all(p_price)
+    await Promise.all([p_price])
     .catch(e=>{
         console.log(e);
     })
