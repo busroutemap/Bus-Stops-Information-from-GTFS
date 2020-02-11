@@ -44,7 +44,8 @@
         <button
         class="ra_button"
         v-on:click="exportPDF(route.route_id)">この運行系統図をPDF出力する</button>
-        <div v-bind:id="'pdf' + route.route_id" class="ra_pdf">
+        <div v-bind:id="'pdf' + route.route_id">
+            <!-- <div v-bind:id="'pdf' + route.route_id" class="ra_pdf"> -->
             <route-info
             v-bind:route="route"></route-info>
             <rows
@@ -54,8 +55,9 @@
             v-bind:here_id="here_id"
             v-bind:route="route"></rows>
         </div>
-        <div v-bind:id="'canvas' + route.route_id" class="ra_canvas">
-        </div>
+        <!-- <div v-bind:id="'canvas' + route.route_id" class="ra_canvas">
+            <img v-bind:id="'img'+route.route_id">
+        </div> -->
     </div>
     </template>
     <div id="view">
