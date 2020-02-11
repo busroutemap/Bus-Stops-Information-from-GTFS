@@ -11,6 +11,7 @@ h1{
 }
 select{
     font-size : 18px;
+    max-width: 880px;
 }
 #status{
     font-size: 24px;
@@ -97,7 +98,7 @@ select{
     display: grid;
     grid-template-rows: 40px 1fr;
     /* grid-template-rows: 40px 1fr 1fr; */
-    border-bottom: solid 2px black;
+    /* border-bottom: solid 2px black; */
     margin : 20px
 }
 .ra_button{
