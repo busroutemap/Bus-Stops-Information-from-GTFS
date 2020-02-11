@@ -9,7 +9,7 @@ const config = {
     mongoUrl: 'mongodb://localhost:27017/gtfs',
 };
 // Fareモデルの参照
-const Fare = require('./v2/models/fare');
+const Fare = require('./models/fare');
 //---------------------------------------------
 const api = async function(req, res, next){
     mongoose.set('useCreateIndex', true);
@@ -24,7 +24,7 @@ const api = async function(req, res, next){
     // 本町 S00436AGC9070001018357H001
     const stop_id = req.query.stop_id;
     // let data = await getData(stop_id);
-    let data = getDataV2(stop_id);
+    let data = await getDataV2(stop_id,Fare);
     res.header('Content-Type', 'application/json; charset=utf-8');
     res.send(data);
 }

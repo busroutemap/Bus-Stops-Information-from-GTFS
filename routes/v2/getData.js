@@ -7,8 +7,9 @@ const getPeriods = require('./getPeriods');
  * 
  * mongoDBにアクセスし、GTFSの系統・停留所・運賃・時刻を取り出す
  * @param stop_id ユーザーからURLのQueryで指定された、単一停留所
+ * @param Fare むちゃくちゃブサイクな暫定処理
  */
-const getData = async(stop_id) => {
+const getData = async(stop_id,Fare) => {
     // 最初にdataをletで指定
     // data.routes
     // data.here
@@ -55,7 +56,7 @@ const getData = async(stop_id) => {
         console.log(e);
     })
     .then(stops=>{
-        return stops[0]
+        return stops[0];
     });
     //---------------------------------------------
     // 系統、現在停留所の取得の一括処理
@@ -67,6 +68,7 @@ const getData = async(stop_id) => {
         data.routes = v[0];
         data.here = v[1];
     });
+    // 1回目
     console.timeLog(stop_id);
     //---------------------------------------------
     // p_fare
@@ -95,11 +97,11 @@ const getData = async(stop_id) => {
             console.log(e);
         })
         .then(rules=>{
-                for (let rule of rules){
-                    // とりあえずIdを記録する
-                    fareIds.push(rule.fare_id);
-                }
-            return rules
+            for (let rule of rules){
+                // とりあえずIdを記録する
+                fareIds.push(rule.fare_id);
+            }
+            return rules;
         });
         //---------------------------------------------
         // (2)routeごとに初便時刻取得->各停留所の時刻差算出
@@ -134,8 +136,8 @@ const getData = async(stop_id) => {
             .catch(e=>{
                 console.log(e);
             })
-            .then(hereTime => {
-                return(getPeriods(trip,hereTime[0]));
+            .then(async (hereTime) => {
+                return(await getPeriods(trip,hereTime[0]));
             });
             return(tmpPeriods);
         });
@@ -143,6 +145,7 @@ const getData = async(stop_id) => {
         // (3)routeごとに停留所取得
         p_ERstops[i] = gtfs.getStops({
             route_id : route.route_id,
+            agency_key : route.agency_key
         },{
             _id : 0,
             stop_id : 1,
@@ -157,41 +160,46 @@ const getData = async(stop_id) => {
             console.log(e);
         })
         .then(stops=>{
-            return stops
+            console.log("stopsうひょおおおおおおおおおおお");
+            return stops;
         });
     }
     //---------------------------------------------
     // 路線ごとの3種データ取得の一括処理
     // EachRoutesの略
-    await Promise.all([p_ERfareRules,p_ERperiods,p_ERstops])
+    await Promise.all(p_ERfareRules)
     .catch(e=>{
         console.log(e);
     })
     .then(v=>{
-        data.ERfareRules = v[0];
-        data.ERperiods = v[1];
-        data.ERstops = v[2];
+        data.ERfareRules = v;
     })
     console.timeLog(stop_id);
+    //---------------------------------------------
+    await Promise.all(p_ERperiods)
+    .catch(e=>{
+        console.log(e);
+    })
+    .then(v=>{
+        data.ERperiods = v;
+    })
+    console.timeLog(stop_id);
+    //---------------------------------------------
+    await Promise.all(p_ERstops)
+    .catch(e=>{
+        console.log(e);
+    })
+    .then(v=>{
+        data.ERstops = v;
+    })
+    // 2回目
+    console.timeLog(stop_id);
+    // console.log(data.ERperiods);
     //---------------------------------------------
     // p_price
     // 自分でSchemaを定義しDBにデータを入れていれば、
     // 本当は.populateを使って運賃定義情報と一緒に取得できるはず
-    // いつものモデルoverwriteエラー
-    const Schema = mongoose.Schema;
-    const fareSchema = Schema({
-        // const fareSchema = new Schema({
-        fare_id : {
-            type : String,
-            require : true,
-            unique : true
-        },
-        price : {
-            type : Number
-        }
-    });
-    const FareModel = mongoose.model('Fare', fareSchema,'fareattributes');
-    let p_price = FareModel.find({
+    let p_price = Fare.find({
         "fare_id" : {
             // fareIdsに同じ値も多いはず
             $in: fareIds
@@ -200,14 +208,18 @@ const getData = async(stop_id) => {
             _id : 0,
             fare_id : 1,
             price : 1,
+            agency_key : 1
             // payment_method : 1
         })
+        // execしないとpromiseになってくれない
+        .exec()
         .catch((e)=>{
             console.log(e);
         })
         .then((attributes)=>{
-            return attributes
-        })
+            console.log("attributes:"+attributes.length);
+            return attributes;
+    })
     //---------------------------------------------
     await Promise.all([p_price])
     .catch(e=>{
@@ -216,6 +228,7 @@ const getData = async(stop_id) => {
     .then(v=>{
         data.ALprices = v[0];
     })
+    // 3回目
     console.timeLog(stop_id);
     //---------------------------------------------
     // 成形処理、高速化が目的であって出力変更は行わない(クライアント変えたくない)
@@ -274,6 +287,7 @@ const getData = async(stop_id) => {
         routes.push(route);
     }
     //---------------------------------------------
+    // 4回目
     console.timeEnd(stop_id);
     return routes
 }

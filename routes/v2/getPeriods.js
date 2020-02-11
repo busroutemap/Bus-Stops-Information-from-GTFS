@@ -41,6 +41,7 @@ const getPeriods = async(trip,hereTime) => {
         const m = diff / 1000 / 60;
         // マイナスになることもありうるのでmで絶対値化
         // stop_sequence順に並べ替えられているはずなのでこれでOK
+        // ん、待てよ、便とstopsが違うこともある？
         periods.push(Math.abs(m));
     }
     return periods;
