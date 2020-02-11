@@ -64,7 +64,8 @@ let app = new Vue({
         // 仮に「敷島公園北」を指定
         // this.stop_id = 'S00525AGC9070001018357H001';
         // 61_2は両備バス「大雲寺前」
-        this.stop_id='61_2';
+        // 27_1は両備バス「天満屋」
+        this.stop_id='27_1';
     },
     watch: {
         // stop_id: function (val, _oldVal) {
