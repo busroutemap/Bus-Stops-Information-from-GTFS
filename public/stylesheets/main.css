@@ -95,7 +95,8 @@ select{
     min-width: 900px;
     height:auto;
     display: grid;
-    grid-template-rows: 40px 1fr 1fr;
+    grid-template-rows: 40px 1fr;
+    /* grid-template-rows: 40px 1fr 1fr; */
     border-bottom: solid 2px black;
     margin : 20px
 }
@@ -105,6 +106,6 @@ select{
 .ra_pdf{
     grid-row: 2 / 3;
 }
-.ra_canvas{
+/* .ra_canvas{
     grid-row: 3 / 4;
-}
+} */

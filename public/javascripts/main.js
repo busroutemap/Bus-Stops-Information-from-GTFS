@@ -36,7 +36,7 @@ const routearea = {
                         }
                     ]
                 };
-                document.querySelector("#canvas" + route_id).appendChild(canvas);
+                // document.getElementById("img" + route_id).src = imgdata;
                 pdfMake.createPdf(pdfContent).download("exportData.pdf");
             });
         }
