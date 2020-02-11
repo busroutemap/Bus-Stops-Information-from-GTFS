@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const config = {
     mongoUrl: 'mongodb://localhost:27017/gtfs',
 };
+// Fareモデルの参照
+const Fare = require('./v2/models/fare');
 //---------------------------------------------
 const api = async function(req, res, next){
     mongoose.set('useCreateIndex', true);
