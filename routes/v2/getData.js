@@ -160,7 +160,6 @@ const getData = async(stop_id,Fare) => {
             console.log(e);
         })
         .then(stops=>{
-            console.log("stopsうひょおおおおおおおおおおお");
             return stops;
         });
     }
