@@ -13,4 +13,4 @@ let FareSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('fare', FareSchema);
+module.exports = mongoose.model('fare', FareSchema,'fareattributes');
